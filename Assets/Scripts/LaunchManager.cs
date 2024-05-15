@@ -10,21 +10,21 @@ using UnityEngine.Networking;
 using YooAsset;
 
 /// <summary>
-/// Æô¶¯Æ÷£º
-/// 1.ÏÂÔØ×ÊÔ´£¬ÓÃYooAsset×ÊÔ´¿ò¼Ü½øĞĞÏÂÔØ
-///     1£©×ÊÔ´ÎÄ¼ş£¬ab°üµÈ
-///     2£©ÈÈ¸üĞÂdll
+/// å¯åŠ¨å™¨ï¼š
+/// 1.ä¸‹è½½èµ„æºï¼Œç”¨YooAssetèµ„æºæ¡†æ¶è¿›è¡Œä¸‹è½½
+///     1ï¼‰èµ„æºæ–‡ä»¶ï¼ŒabåŒ…ç­‰
+///     2ï¼‰çƒ­æ›´æ–°dll
 /// </summary>
 public class LaunchManager : MonoBehaviour
 {
     /// <summary>
-    /// ×ÊÔ´ÏµÍ³ÔËĞĞÄ£Ê½
+    /// èµ„æºç³»ç»Ÿè¿è¡Œæ¨¡å¼
     /// </summary>
     public EPlayMode PlayMode = EPlayMode.EditorSimulateMode;
     void Awake()
     {
 #if !UNITY_EDITOR
-         //´ò°üºóÄ¬ÈÏÔ¶³ÌÏÂÔØÄ£Ê½
+         //æ‰“åŒ…åé»˜è®¤è¿œç¨‹ä¸‹è½½æ¨¡å¼
          PlayMode = EPlayMode.HostPlayMode;
 #endif
         Application.targetFrameRate = 60;
@@ -35,60 +35,60 @@ public class LaunchManager : MonoBehaviour
 
     IEnumerator Start()
     {
-        // ³õÊ¼»¯ÊÂ¼şÏµÍ³
+        // åˆå§‹åŒ–äº‹ä»¶ç³»ç»Ÿ
         //UniEvent.Initalize();
-        //1.³õÊ¼»¯
-        Debug.Log("1. ³õÊ¼»¯");
-        // ³õÊ¼»¯×ÊÔ´ÏµÍ³
+        //1.åˆå§‹åŒ–
+        Debug.Log("1. åˆå§‹åŒ–");
+        // åˆå§‹åŒ–èµ„æºç³»ç»Ÿ
         YooAssets.Initialize();
 
-        // ´´½¨Ä¬ÈÏµÄ×ÊÔ´°ü
+        // åˆ›å»ºé»˜è®¤çš„èµ„æºåŒ…
         var package = YooAssets.CreatePackage("DefaultPackage");
 
-        // ÉèÖÃ¸Ã×ÊÔ´°üÎªÄ¬ÈÏµÄ×ÊÔ´°ü£¬¿ÉÒÔÊ¹ÓÃYooAssetsÏà¹Ø¼ÓÔØ½Ó¿Ú¼ÓÔØ¸Ã×ÊÔ´°üÄÚÈİ¡£
+        // è®¾ç½®è¯¥èµ„æºåŒ…ä¸ºé»˜è®¤çš„èµ„æºåŒ…ï¼Œå¯ä»¥ä½¿ç”¨YooAssetsç›¸å…³åŠ è½½æ¥å£åŠ è½½è¯¥èµ„æºåŒ…å†…å®¹ã€‚
         YooAssets.SetDefaultPackage(package);
 
-        //2.×ÊÔ´ÏµÍ³µÄÔËĞĞÄ£Ê½
-        Debug.Log("2. ×ÊÔ´ÏµÍ³µÄÔËĞĞÄ£Ê½");
+        //2.èµ„æºç³»ç»Ÿçš„è¿è¡Œæ¨¡å¼
+        Debug.Log("2. èµ„æºç³»ç»Ÿçš„è¿è¡Œæ¨¡å¼");
         if (PlayMode == EPlayMode.EditorSimulateMode)
         {
-            var initParameters = new EditorSimulateModeParameters();//EditorSimulateModeParameters¼Ì³Ğ×ÔInitializeParameters
+            var initParameters = new EditorSimulateModeParameters();//EditorSimulateModeParametersç»§æ‰¿è‡ªInitializeParameters
             string simulateManifestFilePath = EditorSimulateModeHelper.SimulateBuild(EDefaultBuildPipeline.BuiltinBuildPipeline.ToString(), "DefaultPackage");
             initParameters.SimulateManifestFilePath = simulateManifestFilePath;
             yield return package.InitializeAsync(initParameters);
         }
         else if (PlayMode == EPlayMode.OfflinePlayMode)
         {
-            var initParameters = new OfflinePlayModeParameters();//OfflinePlayModeParameters¼Ì³Ğ×ÔInitializeParameters
-            initParameters.DecryptionServices = new FileOffsetDecryption();//ĞèÒª²¹³äÕâ¸ö
+            var initParameters = new OfflinePlayModeParameters();//OfflinePlayModeParametersç»§æ‰¿è‡ªInitializeParameters
+            initParameters.DecryptionServices = new FileOffsetDecryption();//éœ€è¦è¡¥å……è¿™ä¸ª
             yield return package.InitializeAsync(initParameters);
         }
         else if (PlayMode == EPlayMode.HostPlayMode)
         {
-            // ×¢Òâ£ºGameQueryServices.cs Ì«¿ÕÕ½»úµÄ½Å±¾Àà£¬ÏêÏ¸¼ûStreamingAssetsHelper.cs
+            // æ³¨æ„ï¼šGameQueryServices.cs å¤ªç©ºæˆ˜æœºçš„è„šæœ¬ç±»ï¼Œè¯¦ç»†è§StreamingAssetsHelper.cs
             string defaultHostServer = "http://127.0.0.1/CDN/Bundle";
             string fallbackHostServer = "http://127.0.0.1/CDN/Bundle";
-            var initParameters = new HostPlayModeParameters();//HostPlayModeParameters¼Ì³Ğ×ÔInitializeParameters
-            initParameters.BuildinQueryServices = new GameQueryServices();//ÄÚÖÃ×ÊÔ´²éÑ¯·şÎñ½Ó¿Ú
-            initParameters.DecryptionServices = new FileOffsetDecryption();//Èç¹û×ÊÔ´°üÔÚ¹¹½¨µÄÊ±ºòÓĞ¼ÓÃÜ£¬ĞèÒªÌá¹©ÊµÏÖIDecryptionServices½Ó¿ÚµÄÊµÀıÀà¡£
-            initParameters.RemoteServices = new RemoteServices(defaultHostServer, fallbackHostServer);//Ô¶¶Ë·şÎñÆ÷²éÑ¯·şÎñ½Ó¿Ú
+            var initParameters = new HostPlayModeParameters();//HostPlayModeParametersç»§æ‰¿è‡ªInitializeParameters
+            initParameters.BuildinQueryServices = new GameQueryServices();//å†…ç½®èµ„æºæŸ¥è¯¢æœåŠ¡æ¥å£
+            initParameters.DecryptionServices = new FileOffsetDecryption();//å¦‚æœèµ„æºåŒ…åœ¨æ„å»ºçš„æ—¶å€™æœ‰åŠ å¯†ï¼Œéœ€è¦æä¾›å®ç°IDecryptionServicesæ¥å£çš„å®ä¾‹ç±»ã€‚
+            initParameters.RemoteServices = new RemoteServices(defaultHostServer, fallbackHostServer);//è¿œç«¯æœåŠ¡å™¨æŸ¥è¯¢æœåŠ¡æ¥å£
             var initOperation = package.InitializeAsync(initParameters);
             yield return initOperation;
 
             if (initOperation.Status == EOperationStatus.Succeed)
             {
-                Debug.Log("×ÊÔ´°ü³õÊ¼»¯³É¹¦£¡");
+                Debug.Log("èµ„æºåŒ…åˆå§‹åŒ–æˆåŠŸï¼");
             }
             else
             {
-                Debug.LogError($"×ÊÔ´°ü³õÊ¼»¯Ê§°Ü£º{initOperation.Error}");
+                Debug.LogError($"èµ„æºåŒ…åˆå§‹åŒ–å¤±è´¥ï¼š{initOperation.Error}");
             }
         }
         else if (PlayMode == EPlayMode.WebPlayMode)
         {
             string defaultHostServer = "http://127.0.0.1/CDN/WebGL/V1.0";
             string fallbackHostServer = "http://127.0.0.1/CDN/WebGL/V1.0";
-            var initParameters = new WebPlayModeParameters();//WebPlayModeParameters¼Ì³Ğ×ÔInitializeParameters
+            var initParameters = new WebPlayModeParameters();//WebPlayModeParametersç»§æ‰¿è‡ªInitializeParameters
             initParameters.BuildinQueryServices = new GameQueryServices();
             initParameters.RemoteServices = new RemoteServices(defaultHostServer, fallbackHostServer);
             var initOperation = package.InitializeAsync(initParameters);
@@ -96,16 +96,16 @@ public class LaunchManager : MonoBehaviour
 
             if (initOperation.Status == EOperationStatus.Succeed)
             {
-                Debug.Log("×ÊÔ´°ü³õÊ¼»¯³É¹¦£¡");
+                Debug.Log("èµ„æºåŒ…åˆå§‹åŒ–æˆåŠŸï¼");
             }
             else
             {
-                Debug.LogError($"×ÊÔ´°ü³õÊ¼»¯Ê§°Ü£º{initOperation.Error}");
+                Debug.LogError($"èµ„æºåŒ…åˆå§‹åŒ–å¤±è´¥ï¼š{initOperation.Error}");
             }
         }
 
-        //3.»ñÈ¡×ÊÔ´°æ±¾£ºUpdatePackageVersionAsync
-        Debug.Log("3. »ñÈ¡×ÊÔ´°æ±¾");
+        //3.è·å–èµ„æºç‰ˆæœ¬ï¼šUpdatePackageVersionAsync
+        Debug.Log("3. è·å–èµ„æºç‰ˆæœ¬");
         var operation = package.UpdatePackageVersionAsync();
         yield return operation;
 
@@ -115,32 +115,32 @@ public class LaunchManager : MonoBehaviour
             string packageVersion = operation.PackageVersion;
             Debug.Log($"Updated package Version : {packageVersion}");
 
-            //4.¸üĞÂ×ÊÔ´Çåµ¥£º¶ÔÓÚÁª»úÔËĞĞÄ£Ê½£¬ÔÚ»ñÈ¡µ½×ÊÔ´°æ±¾ºÅÖ®ºó£¬¾Í¿ÉÒÔ¸üĞÂ×ÊÔ´Çåµ¥ÁË£ºUpdatePackageManifestAsync
-            //Áª»úÔËĞĞÄ£Ê½
-            //Í¨¹ı´«ÈëµÄÇåµ¥°æ±¾£¬ÓÅÏÈ±È¶Ôµ±Ç°¼¤»îÇåµ¥µÄ°æ±¾£¬Èç¹ûÏàÍ¬¾ÍÖ±½Ó·µ»Ø³É¹¦¡£Èç¹ûÓĞ²îÒì¾Í´Ó»º´æÀïÈ¥²éÕÒÆ¥ÅäµÄÇåµ¥£¬Èç¹û»º´æÀï²»´æÔÚ£¬¾ÍÈ¥Ô¶¶ËÏÂÔØ²¢±£´æµ½É³ºĞÀï¡£×îºó¼ÓÔØÉ³ºĞÄÚÆ¥ÅäµÄÇåµ¥ÎÄ¼ş¡£
-            Debug.Log("4. ¸üĞÂ×ÊÔ´Çåµ¥");
+            //4.æ›´æ–°èµ„æºæ¸…å•ï¼šå¯¹äºè”æœºè¿è¡Œæ¨¡å¼ï¼Œåœ¨è·å–åˆ°èµ„æºç‰ˆæœ¬å·ä¹‹åï¼Œå°±å¯ä»¥æ›´æ–°èµ„æºæ¸…å•äº†ï¼šUpdatePackageManifestAsync
+            //è”æœºè¿è¡Œæ¨¡å¼
+            //é€šè¿‡ä¼ å…¥çš„æ¸…å•ç‰ˆæœ¬ï¼Œä¼˜å…ˆæ¯”å¯¹å½“å‰æ¿€æ´»æ¸…å•çš„ç‰ˆæœ¬ï¼Œå¦‚æœç›¸åŒå°±ç›´æ¥è¿”å›æˆåŠŸã€‚å¦‚æœæœ‰å·®å¼‚å°±ä»ç¼“å­˜é‡Œå»æŸ¥æ‰¾åŒ¹é…çš„æ¸…å•ï¼Œå¦‚æœç¼“å­˜é‡Œä¸å­˜åœ¨ï¼Œå°±å»è¿œç«¯ä¸‹è½½å¹¶ä¿å­˜åˆ°æ²™ç›’é‡Œã€‚æœ€ååŠ è½½æ²™ç›’å†…åŒ¹é…çš„æ¸…å•æ–‡ä»¶ã€‚
+            Debug.Log("4. æ›´æ–°èµ„æºæ¸…å•");
             bool savePackageVersion = true;
             var operation2 = package.UpdatePackageManifestAsync(packageVersion, savePackageVersion);
             yield return operation2;
 
             if (operation2.Status == EOperationStatus.Succeed)
             {
-                //5.×ÊÔ´°üÏÂÔØ
-                Debug.Log("5. ×ÊÔ´°üÏÂÔØ");
+                //5.èµ„æºåŒ…ä¸‹è½½
+                Debug.Log("5. èµ„æºåŒ…ä¸‹è½½");
                 yield return Download();
 #if UNITY_EDITOR
-                Debug.Log("6.±à¼­Æ÷Ä£Ê½ÏÂ£¬Ö±½Ó²éÕÒ³ÌĞò¼¯");
-                // ±à¼­Æ÷Ä£Ê½ÏÂ£¬Ö±½Ó½øÈë
+                Debug.Log("6.ç¼–è¾‘å™¨æ¨¡å¼ä¸‹ï¼Œç›´æ¥æŸ¥æ‰¾ç¨‹åºé›†");
+                // ç¼–è¾‘å™¨æ¨¡å¼ä¸‹ï¼Œç›´æ¥è¿›å…¥
                 Assembly hotUpdateAss = System.AppDomain.CurrentDomain.GetAssemblies().First(a => a.GetName().Name == "HotUpdate");
                 Type type = hotUpdateAss.GetType("HotUpdateEntry");
                 type.GetMethod("EntryGame").Invoke(null, null);
 #else
-                //6.¼ÓÔØÈÈ¸ü´úÂë,YooAsset2.0°æ±¾rawfileÎÄ¼şĞèÒªÓÃRawFile¹ÜÏßµ¥¶À´ò°ü,·ñÔòÓÃLoadRawFileAsyncÊ±ºò»á±¨´í
-                //°ÑÈÈ¸ü´úÂë¸Ä³Étxtºó×ºÓÃtextassetÀàĞÍ¶ÁÈ¡¿É½â¾ö
-                Debug.Log("6.¼ÓÔØ²¹³äÔªÊı¾İÓëÈÈ¸ü´úÂë");
-                //²¹³äÔªÊı¾İ
+                //6.åŠ è½½çƒ­æ›´ä»£ç ,YooAsset2.0ç‰ˆæœ¬rawfileæ–‡ä»¶éœ€è¦ç”¨RawFileç®¡çº¿å•ç‹¬æ‰“åŒ…,å¦åˆ™ç”¨LoadRawFileAsyncæ—¶å€™ä¼šæŠ¥é”™
+                //æŠŠçƒ­æ›´ä»£ç æ”¹æˆtxtåç¼€ç”¨textassetç±»å‹è¯»å–å¯è§£å†³
+                Debug.Log("6.åŠ è½½è¡¥å……å…ƒæ•°æ®ä¸çƒ­æ›´ä»£ç ");
+                //è¡¥å……å…ƒæ•°æ®
                 yield return LoadMetadataForAOTAssemblies();
-                //ÈÈ¸ü´úÂë
+                //çƒ­æ›´ä»£ç 
                 var codeHandle = package.LoadAssetAsync<TextAsset>("HotUpdate.dll");
                 yield return codeHandle;
                 TextAsset textAsset = codeHandle.AssetObject as UnityEngine.TextAsset;
@@ -148,7 +148,7 @@ public class LaunchManager : MonoBehaviour
                 Type type = hotUpdateAss.GetType("HotUpdateEntry");
                 type.GetMethod("EntryGame").Invoke(null, null);
 #endif
-                ////7.¼ÓÔØ³¡¾°£¬ÆôÓÃ¿ÉÑ°Ö·¹¦ÄÜ£¨Enable Addressable£©ºó£¬²»ÓÃĞ´È«Â·¾¶£¬Ö±½ÓĞ´×ÊÔ´Ãû³Æ¼´¿É
+                ////7.åŠ è½½åœºæ™¯ï¼Œå¯ç”¨å¯å¯»å€åŠŸèƒ½ï¼ˆEnable Addressableï¼‰åï¼Œä¸ç”¨å†™å…¨è·¯å¾„ï¼Œç›´æ¥å†™èµ„æºåç§°å³å¯
                 //string location = "TestScene";
                 //var sceneMode = UnityEngine.SceneManagement.LoadSceneMode.Single;
                 //bool suspendLoad = false;
@@ -159,20 +159,20 @@ public class LaunchManager : MonoBehaviour
             }
             else
             {
-                //¸üĞÂÊ§°Ü
+                //æ›´æ–°å¤±è´¥
                 Debug.LogError(operation.Error);
             }
         }
         else
         {
-            //¸üĞÂÊ§°Ü
+            //æ›´æ–°å¤±è´¥
             Debug.LogError(operation.Error);
         }
     }
 
     /// <summary>
-    /// Îªaot assembly¼ÓÔØÔ­Ê¼metadata£¬ Õâ¸ö´úÂë·Åaot»òÕßÈÈ¸üĞÂ¶¼ĞĞ¡£
-    /// Ò»µ©¼ÓÔØºó£¬Èç¹ûAOT·ºĞÍº¯Êı¶ÔÓ¦nativeÊµÏÖ²»´æÔÚ£¬Ôò×Ô¶¯Ìæ»»Îª½âÊÍÄ£Ê½Ö´ĞĞ
+    /// ä¸ºaot assemblyåŠ è½½åŸå§‹metadataï¼Œ è¿™ä¸ªä»£ç æ”¾aotæˆ–è€…çƒ­æ›´æ–°éƒ½è¡Œã€‚
+    /// ä¸€æ—¦åŠ è½½åï¼Œå¦‚æœAOTæ³›å‹å‡½æ•°å¯¹åº”nativeå®ç°ä¸å­˜åœ¨ï¼Œåˆ™è‡ªåŠ¨æ›¿æ¢ä¸ºè§£é‡Šæ¨¡å¼æ‰§è¡Œ
     /// </summary>
     private IEnumerator LoadMetadataForAOTAssemblies()
     {
@@ -196,7 +196,7 @@ public class LaunchManager : MonoBehaviour
                 else
                 {
                     byte[] dllBytes = www.downloadHandler.data;
-                    // ¼ÓÔØassembly¶ÔÓ¦µÄdll£¬»á×Ô¶¯ÎªËühook¡£Ò»µ©aot·ºĞÍº¯ÊıµÄnativeº¯Êı²»´æÔÚ£¬ÓÃ½âÊÍÆ÷°æ±¾´úÂë
+                    // åŠ è½½assemblyå¯¹åº”çš„dllï¼Œä¼šè‡ªåŠ¨ä¸ºå®ƒhookã€‚ä¸€æ—¦aotæ³›å‹å‡½æ•°çš„nativeå‡½æ•°ä¸å­˜åœ¨ï¼Œç”¨è§£é‡Šå™¨ç‰ˆæœ¬ä»£ç 
                     LoadImageErrorCode err = RuntimeApi.LoadMetadataForAOTAssembly(dllBytes, mode);
                     Debug.Log($"LoadMetadataForAOTAssembly:{aotDllName}. mode:{mode} ret:{err}");
                 }
@@ -210,10 +210,10 @@ public class LaunchManager : MonoBehaviour
         int failedTryAgain = 3;
         var package = YooAssets.GetPackage("DefaultPackage");
 
-        //´´½¨×ÊÔ´ÏÂÔØÆ÷£¬ÏÂÔØËùÓĞ×ÊÔ´
+        //åˆ›å»ºèµ„æºä¸‹è½½å™¨ï¼Œä¸‹è½½æ‰€æœ‰èµ„æº
         var downloader = package.CreateResourceDownloader(downloadingMaxNum, failedTryAgain);
 
-        //Ã»ÓĞĞèÒªÏÂÔØµÄ×ÊÔ´
+        //æ²¡æœ‰éœ€è¦ä¸‹è½½çš„èµ„æº
         if (downloader.TotalDownloadCount == 0)
         {
             Debug.Log("TotalDownloadCount = 0");
@@ -221,24 +221,24 @@ public class LaunchManager : MonoBehaviour
             yield break;
         }
 
-        //ĞèÒªÏÂÔØµÄÎÄ¼ş×ÜÊıºÍ×Ü´óĞ¡
+        //éœ€è¦ä¸‹è½½çš„æ–‡ä»¶æ€»æ•°å’Œæ€»å¤§å°
         int totalDownloadCount = downloader.TotalDownloadCount;
         long totalDownloadBytes = downloader.TotalDownloadBytes;
 
-        //×¢²á»Øµ÷·½·¨
+        //æ³¨å†Œå›è°ƒæ–¹æ³•
         downloader.OnDownloadErrorCallback = OnDownloadErrorFunction;
         downloader.OnDownloadProgressCallback = OnDownloadProgressUpdateFunction;
         downloader.OnDownloadOverCallback = OnDownloadOverFunction;
         downloader.OnStartDownloadFileCallback = OnStartDownloadFileFunction;
 
-        //¿ªÆôÏÂÔØ
+        //å¼€å¯ä¸‹è½½
         downloader.BeginDownload();
         yield return downloader;
 
-        //¼ì²âÏÂÔØ½á¹û
+        //æ£€æµ‹ä¸‹è½½ç»“æœ
         if (downloader.Status == EOperationStatus.Succeed)
         {
-            Debug.Log("Finish");
+            Debug.Log("DownLoad Finish");
         }
         else
         {
@@ -254,14 +254,14 @@ public class LaunchManager : MonoBehaviour
     private void OnDownloadOverFunction(bool isSucceed)
     {
         Debug.Log("isSucceed");
-        EventCenter.Instance.EventTrigger("ÏÂÔØÍê³É");
+        EventCenter.Instance.EventTrigger("ä¸‹è½½å®Œæˆ");
     }
 
     private void OnDownloadProgressUpdateFunction(int totalDownloadCount, int currentDownloadCount, long totalDownloadBytes, long currentDownloadBytes)
     {
         Debug.Log("totalDownloadCount:" + totalDownloadCount + ",currentDownloadCount" + currentDownloadCount + ",totalDownloadBytes:" + totalDownloadBytes + ",currentDownloadBytes" + currentDownloadBytes);
         double progress = (double)currentDownloadBytes / totalDownloadBytes;
-        EventCenter.Instance.EventTrigger("¸üĞÂÏÂÔØ½ø¶È", (float)progress);
+        EventCenter.Instance.EventTrigger("æ›´æ–°ä¸‹è½½è¿›åº¦", (float)progress);
     }
 
     private void OnDownloadErrorFunction(string fileName, string error)
@@ -270,13 +270,13 @@ public class LaunchManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ×ÊÔ´ÎÄ¼şÆ«ÒÆ¼ÓÔØ½âÃÜÀà
+    /// èµ„æºæ–‡ä»¶åç§»åŠ è½½è§£å¯†ç±»
     /// </summary>
     private class FileOffsetDecryption : IDecryptionServices
     {
         /// <summary>
-        /// Í¬²½·½Ê½»ñÈ¡½âÃÜµÄ×ÊÔ´°ü¶ÔÏó
-        /// ×¢Òâ£º¼ÓÔØÁ÷¶ÔÏóÔÚ×ÊÔ´°ü¶ÔÏóÊÍ·ÅµÄÊ±ºò»á×Ô¶¯ÊÍ·Å
+        /// åŒæ­¥æ–¹å¼è·å–è§£å¯†çš„èµ„æºåŒ…å¯¹è±¡
+        /// æ³¨æ„ï¼šåŠ è½½æµå¯¹è±¡åœ¨èµ„æºåŒ…å¯¹è±¡é‡Šæ”¾çš„æ—¶å€™ä¼šè‡ªåŠ¨é‡Šæ”¾
         /// </summary>
         AssetBundle IDecryptionServices.LoadAssetBundle(DecryptFileInfo fileInfo, out Stream managedStream)
         {
@@ -285,8 +285,8 @@ public class LaunchManager : MonoBehaviour
         }
 
         /// <summary>
-        /// Òì²½·½Ê½»ñÈ¡½âÃÜµÄ×ÊÔ´°ü¶ÔÏó
-        /// ×¢Òâ£º¼ÓÔØÁ÷¶ÔÏóÔÚ×ÊÔ´°ü¶ÔÏóÊÍ·ÅµÄÊ±ºò»á×Ô¶¯ÊÍ·Å
+        /// å¼‚æ­¥æ–¹å¼è·å–è§£å¯†çš„èµ„æºåŒ…å¯¹è±¡
+        /// æ³¨æ„ï¼šåŠ è½½æµå¯¹è±¡åœ¨èµ„æºåŒ…å¯¹è±¡é‡Šæ”¾çš„æ—¶å€™ä¼šè‡ªåŠ¨é‡Šæ”¾
         /// </summary>
         AssetBundleCreateRequest IDecryptionServices.LoadAssetBundleAsync(DecryptFileInfo fileInfo, out Stream managedStream)
         {
@@ -302,7 +302,7 @@ public class LaunchManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Ô¶¶Ë×ÊÔ´µØÖ·²éÑ¯·şÎñÀà
+    /// è¿œç«¯èµ„æºåœ°å€æŸ¥è¯¢æœåŠ¡ç±»
     /// </summary>
     private class RemoteServices : IRemoteServices
     {

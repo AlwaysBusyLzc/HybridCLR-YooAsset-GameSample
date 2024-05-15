@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +9,6 @@ public class Cheat : MonoBehaviour
     {
         var btn = transform.GetComponentInChildren<Button>();
         var ps = GameObject.Find("Player").GetComponent<PlayerShooting>();
-        btn.onClick.AddListener(() => { ps.WeaponPower++; });
+	    btn.onClick.AddListener(() => { ps.WeaponPower++; });
     }
 }

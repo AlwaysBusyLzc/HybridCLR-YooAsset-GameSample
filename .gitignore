@@ -48,3 +48,6 @@ __pycache__
 # Visual Studio solution files
 *.sln
 *.csproj
+/Assets/外部资源
+/Temp
+Assets/外部资源.meta
