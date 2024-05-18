@@ -29,6 +29,9 @@ public class LaunchManager : MonoBehaviour
 #endif
         Application.targetFrameRate = 60;
         Application.runInBackground = true;
+
+        Time.timeScale = 0.1f;
+
         Screen.SetResolution(600, 800, false);
         DontDestroyOnLoad(this.gameObject);
     }

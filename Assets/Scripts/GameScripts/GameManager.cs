@@ -20,7 +20,7 @@ public class GameManager : SingleMonoBase<GameManager>
 
     public async void LoadScene(string sceneName)
     {
-        Debug.Log("加载主场景");
+        Debug.Log($"加载场景:{sceneName}");
         //获取资源包
         bool suspendLoad = false;
         SceneHandle handle = YooAssets.LoadSceneAsync(sceneName, LoadSceneMode.Single, suspendLoad);

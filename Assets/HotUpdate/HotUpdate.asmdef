@@ -6,7 +6,9 @@
         "YooAsset",
         "LeanPool",
         "RQTool",
-        "GameManager"
+        "GameManager",
+        "UniFramework.Event",
+        "UniFramework.Pooling"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
