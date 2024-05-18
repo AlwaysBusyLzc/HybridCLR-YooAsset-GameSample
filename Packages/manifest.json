@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "com.code-philosophy.hybridclr": "https://gitee.com/focus-creative-games/hybridclr_unity.git",
     "com.tuyoogame.yooasset": "2.1.1",
     "com.unity.ai.navigation": "1.1.5",
     "com.unity.feature.2d": "2.0.0",
