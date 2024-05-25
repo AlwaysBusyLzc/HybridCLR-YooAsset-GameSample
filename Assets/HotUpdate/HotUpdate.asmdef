@@ -8,7 +8,8 @@
         "RQTool",
         "GameManager",
         "UniFramework.Event",
-        "UniFramework.Pooling"
+        "UniFramework.Pooling",
+        "UniFramework.Log"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
