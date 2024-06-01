@@ -40,7 +40,7 @@ MonoBehaviour:
     - GroupName: Prefabs
       GroupDesc: "\u9884\u5236\u4F53"
       AssetTags: 
-      ActiveRuleName: EnableGroup
+      ActiveRuleName: DisableGroup
       Collectors:
       - CollectPath: Assets/AssetsPackage/Prefabs
         CollectorGUID: 71ae7b48156811540bddeb00757e7b67
@@ -57,6 +57,19 @@ MonoBehaviour:
       Collectors:
       - CollectPath: Assets/AssetsPackage/Codes
         CollectorGUID: b3a58c54198f5534d96ab49be9e64ddb
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+    - GroupName: GamePrefabs
+      GroupDesc: 
+      AssetTags: 
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/AssetsPackage/Games/Prefabs
+        CollectorGUID: 873e67b09da961347bdb799450469c68
         CollectorType: 0
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory
