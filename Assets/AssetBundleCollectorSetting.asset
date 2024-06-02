@@ -40,7 +40,7 @@ MonoBehaviour:
     - GroupName: Prefabs
       GroupDesc: "\u9884\u5236\u4F53"
       AssetTags: 
-      ActiveRuleName: DisableGroup
+      ActiveRuleName: EnableGroup
       Collectors:
       - CollectPath: Assets/AssetsPackage/Prefabs
         CollectorGUID: 71ae7b48156811540bddeb00757e7b67

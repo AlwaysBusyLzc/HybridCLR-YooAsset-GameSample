@@ -13,6 +13,14 @@ public class UIHallPanel : MonoBehaviour
         {
             GameManager.Instance.LoadScene("Game_FlappyBird");
         });
+
+        var trainFarBtn = transform.Find("Trains/TrainFar").GetComponent<Button>();
+        trainFarBtn.onClick.AddListener(() =>
+        {
+            GameManager.Instance.LoadScene("Game_Daxigua");
+        });
+
+
     }
 
     // Update is called once per frame
