@@ -6,13 +6,31 @@ using YooAsset;
 
 public class Fruit : MonoBehaviour
 {
-    public int fruit_type;
+    public enum FruitState
+    {
+        Born = 1,
+        Drag = 2,
+        Fall = 3,
+    }
 
+
+    public int fruit_type;
+    public FruitState state = FruitState.Born;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        GetComponent<Rigidbody>().useGravity = false;
+    }
+
+    public void SetState(FruitState state)
+    {
+        state = state;
+    }
+
+    public void Fall()
+    {
+        GetComponent<Rigidbody>().useGravity = true;
     }
 
     // Update is called once per frame
@@ -37,6 +55,8 @@ public class Fruit : MonoBehaviour
                 GameObject target_fruit = asset_handle.AssetObject as GameObject;
                 Instantiate(target_fruit, transform.position, Quaternion.identity);
                 DestroyImmediate(gameObject);
+                DestroyImmediate(other_gameobject);
+
             }
         }
     }
