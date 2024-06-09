@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using YooAsset;
 
@@ -20,7 +21,7 @@ public class Fruit : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<Rigidbody>().useGravity = false;
+
     }
 
     public void SetState(FruitState state)
@@ -30,7 +31,8 @@ public class Fruit : MonoBehaviour
 
     public void Fall()
     {
-        GetComponent<Rigidbody>().useGravity = true;
+        state = FruitState.Fall;
+        gameObject.AddComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -53,7 +55,9 @@ public class Fruit : MonoBehaviour
                 var asset_handle = res_package.LoadAssetAsync<GameObject>($"fruit_{target_fruit_type}");
                 yield return asset_handle;
                 GameObject target_fruit = asset_handle.AssetObject as GameObject;
-                Instantiate(target_fruit, transform.position, Quaternion.identity);
+                var new_fruit = Instantiate(target_fruit, transform.position, Quaternion.identity);
+                new_fruit.GetComponent<Fruit>().Fall();
+
                 DestroyImmediate(gameObject);
                 DestroyImmediate(other_gameobject);
 
