@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using YooAsset;
+using Random = UnityEngine.Random;
 
 public class Fruit : MonoBehaviour
 {
@@ -38,11 +39,27 @@ public class Fruit : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (state == FruitState.Born)
+            return;
+
+
+        if (state == FruitState.Fall)
+        {
+            if (transform.position.y > 3f)
+            {
+                Debug.Log("游戏结束，你输了");
+                Time.timeScale = 0;
+
+                // 弹出结算结束面板
+            }
+        }
     }
 
     IEnumerator OnCollisionEnter2D(Collision2D other)
     {
+        if (state == FruitState.Born)
+            yield break;
+
         GameObject other_gameobject = other.gameObject;
         if (other_gameobject.CompareTag("Fruit"))
         {
@@ -57,9 +74,19 @@ public class Fruit : MonoBehaviour
                 GameObject target_fruit = asset_handle.AssetObject as GameObject;
                 var new_fruit = Instantiate(target_fruit, transform.position, Quaternion.identity);
                 new_fruit.GetComponent<Fruit>().Fall();
+                // // 产生一个爆炸力
+                // new_fruit.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-10, 10), 0f));
 
                 DestroyImmediate(gameObject);
                 DestroyImmediate(other_gameobject);
+
+
+                if (target_fruit_type == 10)
+                {
+                    Debug.Log("游戏结束,你赢了");
+                    Time.timeScale = 0f;
+                    // 弹出结束面板
+                }
 
             }
         }

@@ -16,7 +16,7 @@ public class SpawnFruit: MonoBehaviour
     private int current_index;
     private int next_index;
 
-    private GameObject current_fruit;
+    public GameObject current_fruit;
 
     Vector2 touchPosition;
     private EventGroup event_group;
@@ -102,7 +102,8 @@ public class SpawnFruit: MonoBehaviour
                 if (touch.phase == TouchPhase.Moved)
                 {
                     Debug.Log("触摸移动");
-                    touchPosition = touch.position;
+                    touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
+                    return Mathf.Clamp(touchPosition.x, -2.9f, 2.9f);
                 }
                 // 如果是触摸结束或移动（这里我们主要关注结束以判断完整滑动）
                 else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
